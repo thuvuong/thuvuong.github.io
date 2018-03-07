@@ -134,62 +134,12 @@ Man.prototype.draw = function () {
 }
 //------------------------------
 
-function Enemy(game, spritesheetL, spritesheetR) {
-	this.animationL = new Animation(spritesheetL, 407/8, 52, 8, 0.15, 8, true, 2);
-	this.animationR = new Animation(spritesheetR, 407/8, 52, 8, 0.15, 8, true, 2);
-    this.speed = 200;
-    this.ctx = game.ctx;
-    Entity.call(this, game, 300, 10);
-}
- console.log(this.game);
-Enemy.prototype = new Entity();
-Enemy.prototype.constructor = Enemy;
-
-var itTrue = 0;
-var counter = 0;
-
-Enemy.prototype.update = function () {
-    this.x += this.game.clockTick * this.speed;
-    if (this.x > 1040 || this.x <= 0) this.x = 300;
-    Entity.prototype.update.call(this);
-	
-	if (counter < 100) {
-		counter++;
-		isTrue = 0;
-		this.speed = 200;
-	} else {
-		counter++;
-		isTrue = 1;
-		this.speed = - 200;
-		if(counter > 200) {
-			counter = 0;
-		}
-		
-	}
-	
-}
-
-Enemy.prototype.draw = function () {
-    switch(isTrue) {
-		case 0:
-	this.animationR.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
-		break;
-		case 1:
-	this.animationL.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
-		break;
-	}
-    Entity.prototype.draw.call(this);
-	
-}
-
 
 
 AM.queueDownload("./img/bean.png");
 AM.queueDownload("./img/ken.png");
 AM.queueDownload("./img/background.jpg");
 AM.queueDownload("./img/volt.png");
-AM.queueDownload("./img/enemyLeft.png");
-AM.queueDownload("./img/enemyRight.png");
 
 
 
@@ -206,7 +156,7 @@ AM.downloadAll(function () {
     gameEngine.addEntity(new Bean(gameEngine, AM.getAsset("./img/bean.png")));
 	gameEngine.addEntity(new Volt(gameEngine, AM.getAsset("./img/volt.png")));
 	gameEngine.addEntity(new Man(gameEngine, AM.getAsset("./img/ken.png")));
-	gameEngine.addEntity(new Enemy(gameEngine, AM.getAsset("./img/enemyLeft.png"), AM.getAsset("./img/enemyRight.png")));
+
 	
 
 
