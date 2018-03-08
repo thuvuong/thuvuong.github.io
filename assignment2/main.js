@@ -243,7 +243,7 @@ ASSET_MANAGER.downloadAll(function () {
     
     var gameEngine = new GameEngine();
     var circle = new Circle(gameEngine);
-	var rect = new Rectangle(gameEngine, Math.floor(Math.random() * 650) ,Math.floor(Math.random() * 650));
+	var rect = new Rectangle(gameEngine, Math.floor(Math.random() * 800) ,Math.floor(Math.random() * 800));
 	
     circle.setIt();
     gameEngine.addEntity(circle);
@@ -255,7 +255,7 @@ ASSET_MANAGER.downloadAll(function () {
     }
     
 	for (var i = 0; i < 5; i++) {
-		rect = new Rectangle(gameEngine, Math.floor(Math.random() * 650), Math.floor(Math.random() * 650));
+		rect = new Rectangle(gameEngine, Math.floor(Math.random() * 800), Math.floor(Math.random() * 800));
 		gameEngine.addEntity(rect);
 	}
 	
