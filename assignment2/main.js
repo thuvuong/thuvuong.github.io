@@ -44,26 +44,26 @@ Circle.prototype.collide = function (other) {
 };
 
 // return true if the rectangle and circle are colliding
-Circle.prototype.rectCircleColliding = function (other) {
-    var distX = Math.abs(this.x - other.x - other.w / 2);
-    var distY = Math.abs(this.y - other.y - other.h / 2);
+Circle.prototype.rectCircleColliding = function (rect) {
+    var distX = Math.abs(this.x - rect.x - rect.w / 2);
+    var distY = Math.abs(this.y - rect.y - rect.h / 2);
 
-    if (distX > (other.w / 2 + this.radius)) {
+    if (distX > (rect.w / 2 + this.radius)) {
         return false;
     }
-    if (distY > (other.h / 2 + this.radius)) {
+    if (distY > (rect.h / 2 + this.radius)) {
         return false;
     }
 
-    if (distX <= (other.w / 2)) {
+    if (distX <= (rect.w / 2)) {
         return true;
     }
-    if (distY <= (other.h / 2)) {
+    if (distY <= (rect.h / 2)) {
         return true;
     }
 
-    var dx = distX - other.w / 2;
-    var dy = distY - other.h / 2;
+    var dx = distX - rect.w / 2;
+    var dy = distY - rect.h / 2;
     return (dx * dx + dy * dy <= (this.r * this.r));
 }
 
@@ -215,7 +215,7 @@ Rectangle.prototype.update = function () {
 Rectangle.prototype.draw = function (ctx) {
     ctx.beginPath();
     
-	ctx.lineWidth = "6";
+	ctx.lineWidth = "2";
 	ctx.strokeStyle = this.colors[Math.floor(Math.random() * 3)];
 	
     ctx.rect(this.x, this.y, this.width, this.height);
