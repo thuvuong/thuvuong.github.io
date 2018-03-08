@@ -134,7 +134,7 @@ Circle.prototype.update = function () {
             if (this.it) {
                 this.setNotIt();
                 ent.setIt();
-                ent.radius += 2;
+                ent.radius += 1;
             }
             else if (ent.it) {
                 this.setIt();
