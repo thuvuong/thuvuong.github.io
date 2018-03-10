@@ -1,3 +1,16 @@
+var gameEngine = new GameEngine();
+
+// assignment 3 below
+
+var mySaves;
+var socket = io.connect("http://24.16.255.56:8888");
+
+
+socket.on("connect", function () {
+    console.log("Socket connected.")
+});
+
+// assignment 3 above
 
 // GameBoard code below
 
@@ -86,9 +99,9 @@ Circle.prototype.update = function () {
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
         if ((ent != this && this.collide(ent)) || rectCircleColliding(this, ent)) {
-            console.log("hello");
-            console.log("circle: ", (ent != this && this.collide(ent)))
-            console.log("Rectangle", ent != this && rectCircleColliding(this, ent));
+            // console.log("hello");
+            // console.log("circle: ", (ent != this && this.collide(ent)))
+            // console.log("Rectangle", ent != this && rectCircleColliding(this, ent));
             var temp = { x: this.velocity.x, y: this.velocity.y };
 
             var dist = distance(this, ent);
@@ -186,8 +199,8 @@ Circle.prototype.update = function () {
            // console.log("circle: ", (ent != this && this.collide({ x: ent.x, y: ent.y, radius: this.visualRadius })))
            // console.log("Rectangle", ent != this && rectCircleColliding({ x: ent.x, y: ent.y, radius: this.radius }, {x: ent.x, y: ent.y, w: ent.width, h: ent.height}));
             var dist = distance(this, ent);
-            
-            
+
+
 			//red
 			if (this.it && dist > this.radius + ent.radius + 10) {
                 var difX = (ent.x - this.x)/dist;
@@ -249,53 +262,153 @@ Rectangle.prototype.constructor = Rectangle;
 
 // return true if the rectangle and circle are colliding
 function rectCircleColliding (cir, rec) {
-    // distance from the circle center to the rectangle 
+    // distance from the circle center to the rectangle
     var distX = Math.abs(cir.x - rec.x);
     var distY = Math.abs(cir.y - rec.y);
-   
-    // if the distance is greater than half circle and half rectangle, 
+
+    // if the distance is greater than half circle and half rectangle,
     // they are far apart from colliding
     if (distX > (rec.w / 2 + cir.radius)) {
-        console.log("false 1: ");
+        // console.log("false 1: ");
         return false;
     }
     if (distY > (rec.h / 2 + cir.radius)) {
-        console.log("false 2: ");
+        // console.log("false 2: ");
         return false;
     }
     // if the distance is less than haft rectangle, then they are colling
     if (distX <= (rec.w / 2)) {
-        console.log("true 1: ");
+        // console.log("true 1: ");
         return true;
     }
     if (distY <= (rec.h / 2)) {
-        console.log("true 2: ");
+        // console.log("true 2: ");
         return true;
     }
     // test the collision at the rectangle corners
     var dx = distX - rec.w / 2;
     var dy = distY - rec.h / 2;
     var distance = dx * dx + dy * dy ;
-    console.log("oh yeah");
+    // console.log("oh yeah");
     return (distance <= (cir.r * cir.r));
 }
 
 Rectangle.prototype.update = function () {
-	
+
 };
 
 Rectangle.prototype.draw = function (ctx) {
     ctx.beginPath();
-    
+
 	ctx.lineWidth = "2";
 	ctx.strokeStyle = this.colors[Math.floor(Math.random() * 3)];
-	
+
     ctx.rect(this.x, this.y, this.width, this.height);
     ctx.stroke();
 
 };
 
+// assignment 3 below
 
+function saveSim() {
+
+var tempVel = [];
+var tempX = [];
+var tempY = [];
+var tempIt = [];
+var tempVis = [];
+var tempCol = [];
+
+var tempWid = [];
+var tempHei = [];
+
+
+
+var myLen = 0;
+for (var i = 0; i < gameEngine.entities.length; i++) {
+  tempVel.push(gameEngine.entities[i].velocity);
+  tempX.push(gameEngine.entities[i].x);
+  tempY.push(gameEngine.entities[i].y);
+  tempIt.push(gameEngine.entities[i].it);
+  tempVis.push(gameEngine.entities[i].visualRadius);
+  tempCol.push(gameEngine.entities[i].color);
+
+  tempWid.push(gameEngine.entities[i].width);
+  tempHei.push(gameEngine.entities[i].height);
+
+
+
+  if (typeof(gameEngine.entities[i].color) != "undefined") {
+    myLen++;
+  }
+}
+
+var mytotalLen = gameEngine.entities.length;
+
+mySaves = {vel: tempVel, x: tempX, y: tempY, it: tempIt, vis: tempVis, col: tempCol, wid: tempWid, hei: tempHei, len: myLen, total: mytotalLen};
+
+
+socket.emit("save", { studentname: "Thu Vuong", statename: "Save", data: mySaves });
+
+}
+
+
+function loadSim() {
+
+          socket.emit("load", { studentname: "Thu Vuong", statename: "Save" });
+
+          socket.on("load", function (data) {
+
+              var loadData = data.data;
+
+              console.log(loadData);
+
+              var tempVel = loadData.vel;
+              var tempX = loadData.x;
+              var tempY = loadData.y;
+              var tempIt = loadData.it;
+              var tempVis = loadData.vis;
+              var tempCol = loadData.col;
+
+              var tempWid = loadData.wid;
+              var tempHei = loadData.hei;
+
+
+              for (var i = 0; i < gameEngine.entities.length; i++) {
+                gameEngine.entities[i].removeFromWorld = true;
+              }
+
+              for (var i = 0; i < loadData.len; i++) {
+                var myCircle = new Circle(gameEngine);
+                myCircle.velocity = tempVel[i];
+                myCircle.x = tempX[i];
+                myCircle.y = tempY[i];
+                myCircle.it = tempIt[i];
+                myCircle.visualRadius = tempVis[i];
+                myCircle.color = tempCol[i];
+
+                gameEngine.addEntity(myCircle);
+
+              }
+
+              for (var i = loadData.len; i < loadData.total; i++) {
+                var myRec = new Rectangle(gameEngine);
+                myRec.x = tempX[i];
+                myRec.y = tempY[i];
+                myRec.width = tempWid[i];
+                myRec.height = tempHei[i];
+
+                gameEngine.addEntity(myRec);
+
+              }
+
+
+          });
+
+
+}
+
+// assignment 3 above
 
 var friction = 1;
 var acceleration = 1000000;
@@ -308,29 +421,31 @@ ASSET_MANAGER.queueDownload("./img/black.png");
 ASSET_MANAGER.queueDownload("./img/white.png");
 
 ASSET_MANAGER.downloadAll(function () {
-    console.log("starting up da sheild");
+    // console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
 
-    
-    var gameEngine = new GameEngine();
+
+    // var gameEngine = new GameEngine();
     var circle = new Circle(gameEngine);
 	var rect = new Rectangle(gameEngine, Math.floor(Math.random() * 600) ,Math.floor(Math.random() * 600));
-	
+
     circle.setIt();
     gameEngine.addEntity(circle);
-	gameEngine.addEntity(rect);
-	
+
+
     for (var i = 0; i < 12; i++) {
         circle = new Circle(gameEngine);
         gameEngine.addEntity(circle);
     }
-    
+
+    gameEngine.addEntity(rect);
+
 	for (var i = 0; i < 5; i++) {
 		rect = new Rectangle(gameEngine, Math.floor(Math.random() * 600), Math.floor(Math.random() * 600));
 		gameEngine.addEntity(rect);
 	}
-	
+
     gameEngine.init(ctx);
     gameEngine.start();
 });
