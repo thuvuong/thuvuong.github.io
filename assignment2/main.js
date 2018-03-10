@@ -278,7 +278,7 @@ function rectCircleColliding (cir, rec) {
     var lenRectCir = distRectCircleX * distRectCircleY + distRectCircleY * distRectCircleY;
     // distance top left corner of rec to the center of rec
     var recCirX = Math.abs(rec.w/2 - rec.x);
-    var recCiry = Math.abs(rec.h/2 - rec.y);
+    var recCirY = Math.abs(rec.h/2 - rec.y);
     var recCirlen = recCirX * recCirX + recCirY * recCirY;
 
     console.log(lenRectCir <= recCirlen + cir.radius);
