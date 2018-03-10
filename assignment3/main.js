@@ -2,7 +2,7 @@ var gameEngine = new GameEngine();
 
 // assignment 3 below
 
-var mySaves;
+var save;
 var socket = io.connect("http://24.16.255.56:8888");
 
 
@@ -312,29 +312,29 @@ Rectangle.prototype.draw = function (ctx) {
 
 function saveSim() {
 
-var tempVel = [];
-var tempX = [];
-var tempY = [];
-var tempIt = [];
-var tempVis = [];
-var tempCol = [];
+var velociy = [];
+var x = [];
+var y = [];
+var it = [];
+var visualRadius = [];
+var color = [];
 
-var tempWid = [];
-var tempHei = [];
+var width = [];
+var height = [];
 
 
 
 var myLen = 0;
 for (var i = 0; i < gameEngine.entities.length; i++) {
-  tempVel.push(gameEngine.entities[i].velocity);
-  tempX.push(gameEngine.entities[i].x);
-  tempY.push(gameEngine.entities[i].y);
-  tempIt.push(gameEngine.entities[i].it);
-  tempVis.push(gameEngine.entities[i].visualRadius);
-  tempCol.push(gameEngine.entities[i].color);
+  velocity.push(gameEngine.entities[i].velocity);
+  x.push(gameEngine.entities[i].x);
+  y.push(gameEngine.entities[i].y);
+  it.push(gameEngine.entities[i].it);
+  visualRadius.push(gameEngine.entities[i].visualRadius);
+  color.push(gameEngine.entities[i].color);
 
-  tempWid.push(gameEngine.entities[i].width);
-  tempHei.push(gameEngine.entities[i].height);
+  width.push(gameEngine.entities[i].width);
+  height.push(gameEngine.entities[i].height);
 
 
 
@@ -345,10 +345,10 @@ for (var i = 0; i < gameEngine.entities.length; i++) {
 
 var mytotalLen = gameEngine.entities.length;
 
-mySaves = {vel: tempVel, x: tempX, y: tempY, it: tempIt, vis: tempVis, col: tempCol, wid: tempWid, hei: tempHei, len: myLen, total: mytotalLen};
+save = {vel: velocity, x: x, y: y, it: it, vis: visualRadius, col: color, wid: width, hei: height, len: myLen, total: mytotalLen};
 
 
-socket.emit("save", { studentname: "Thu Vuong", statename: "Save", data: mySaves });
+socket.emit("save", { studentname: "Thu Vuong", statename: "Save", data: save });
 
 }
 
@@ -363,15 +363,15 @@ function loadSim() {
 
               console.log(loadData);
 
-              var tempVel = loadData.vel;
-              var tempX = loadData.x;
-              var tempY = loadData.y;
-              var tempIt = loadData.it;
-              var tempVis = loadData.vis;
-              var tempCol = loadData.col;
+              var velocity = loadData.vel;
+              var x = loadData.x;
+              var y = loadData.y;
+              var it = loadData.it;
+              var visualRadius = loadData.vis;
+              var color = loadData.col;
 
-              var tempWid = loadData.wid;
-              var tempHei = loadData.hei;
+              var width = loadData.wid;
+              var height = loadData.hei;
 
 
               for (var i = 0; i < gameEngine.entities.length; i++) {
@@ -380,12 +380,12 @@ function loadSim() {
 
               for (var i = 0; i < loadData.len; i++) {
                 var myCircle = new Circle(gameEngine);
-                myCircle.velocity = tempVel[i];
-                myCircle.x = tempX[i];
-                myCircle.y = tempY[i];
-                myCircle.it = tempIt[i];
-                myCircle.visualRadius = tempVis[i];
-                myCircle.color = tempCol[i];
+                myCircle.velocity = velocity[i];
+                myCircle.x = x[i];
+                myCircle.y = y[i];
+                myCircle.it = it[i];
+                myCircle.visualRadius = visualRadius[i];
+                myCircle.color = color[i];
 
                 gameEngine.addEntity(myCircle);
 
@@ -393,10 +393,10 @@ function loadSim() {
 
               for (var i = loadData.len; i < loadData.total; i++) {
                 var myRec = new Rectangle(gameEngine);
-                myRec.x = tempX[i];
-                myRec.y = tempY[i];
-                myRec.width = tempWid[i];
-                myRec.height = tempHei[i];
+                myRec.x = x[i];
+                myRec.y = y[i];
+                myRec.width = width[i];
+                myRec.height = height[i];
 
                 gameEngine.addEntity(myRec);
 
