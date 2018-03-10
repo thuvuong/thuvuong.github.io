@@ -124,7 +124,7 @@ Circle.prototype.update = function () {
             var temp = { x: this.velocity.x, y: this.velocity.y };
 
             var dist = distance(this, ent);
-            var delta = this.radius + ent.radius - dist;
+            var delta = this.radius + this.radius - dist;
             var difX = (this.x - ent.x)/dist;
             var difY = (this.y - ent.y)/dist;
 
@@ -263,19 +263,20 @@ function rectCircleColliding (cir, rec) {
         return false;
     }
     // if the distance is less than haft rectangle, then they are colling
-    if (distX <= (rec.w / 2)) {
+    if (distX <= (rec.w / 2 + cir.radius)) {
         console.log("true 1: ");
         return true;
     }
-    if (distY <= (rec.h / 2)) {
+    if (distY <= (rec.h / 2 + cir.radius)) {
         console.log("true 2: ");
         return true;
     }
     // test the collision at the rectangle corners
-    var dx = distX - rec.w / 2;
-    var dy = distY - rec.h / 2;
-    var distance = dx * dx + dy * dy ;
+    var dx = Math.abs(distX - rec.w / 2);
+    var dy = Math.abs(distY - rec.h / 2);
+    var distance = dx * dx + dy * dy;
     console.log("oh yeah");
+   console.log("Corner case: ",distance <= (cir.r * cir.r));
     return (distance <= (cir.r * cir.r));
 }
 
