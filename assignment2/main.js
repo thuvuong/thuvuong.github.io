@@ -276,8 +276,8 @@ function rectCircleColliding (cir, rec) {
     var dy = Math.abs(distY - rec.h / 2);
     var distance = dx * dx + dy * dy;
     console.log("oh yeah");
-   console.log("Corner case: ",distance <= (cir.r * cir.r));
-    return (distance <= (cir.r * cir.r));
+    console.log("Corner case: ",distance <= (cir.radius * cir.radius));
+    return (distance <= (cir.radius * cir.radius));
 }
 
 Rectangle.prototype.update = function () {
