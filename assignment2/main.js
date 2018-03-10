@@ -85,7 +85,7 @@ Circle.prototype.update = function () {
 
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
-        if ((ent != this && this.collide(ent)) || rectCircleColliding(this, ent)) {
+        if ((ent != this && this.collide(ent)) ) {
             console.log("hello");
             console.log("circle: ", (ent != this && this.collide(ent)))
             console.log("Rectangle", ent != this && rectCircleColliding(this, ent));
@@ -130,34 +130,33 @@ Circle.prototype.update = function () {
 
             this.x += difX * delta / 2;
             this.y += difY * delta / 2;
-            ent.x -= difX * delta / 2;
-            ent.y -= difY * delta / 2;
 
-            this.velocity.x = ent.velocity.x * friction;
-            this.velocity.y = ent.velocity.y * friction;
-            ent.velocity.x = temp.x * friction;
-            ent.velocity.y = temp.y * friction;
+           
+            this.velocity.x = temp.x * friction;
+            this.velocity.y = temp.y * friction;
+
             this.x += this.velocity.x * this.game.clockTick;
             this.y += this.velocity.y * this.game.clockTick;
-            ent.x += ent.velocity.x * this.game.clockTick;
-            ent.y += ent.velocity.y * this.game.clockTick;
-            if (this.it) {
+           
+           /* if (this.it) {
                 this.setNotIt();
                 ent.setIt();
                 ent.radius += 1;
             }
-            else if (ent.it) {
+            else {
                 this.setIt();
                 ent.setNotIt();
                 ent.radius -= 1;
-            }
+            }*/
         }
         if (rectCircleColliding({ x: ent.x, y: ent.y, radius: this.radius }, {x: ent.x, y: ent.y, w: ent.width, h: ent.height })) {
+            
+            var dist = distance(this, ent);
             //red
-			if (this.it && dist > this.radius + ent.radius + 10) {
+			/*if (this.it && dist > this.radius + ent.radius + 10) {
                 var difX = (ent.x - this.x)/dist;
                 var difY = (ent.y - this.y)/dist;
-                this.velocity.x += difX * acceleration / (dist*dist);
+                this.velocity.x += difX * acceleration / (dist * dist);
                 this.velocity.y += difY * acceleration / (dist * dist);
                 var speed = Math.sqrt(this.velocity.x*this.velocity.x + this.velocity.y*this.velocity.y);
                 if (speed > maxSpeed) {
@@ -165,9 +164,9 @@ Circle.prototype.update = function () {
                     this.velocity.x *= ratio;
                     this.velocity.y *= ratio;
                 }
-            }
+            }*/
 			//white
-            if (ent.it && dist > this.radius + ent.radius) {
+            /*if (this.it && dist > this.radius + ent.radius) {
                 var difX = (ent.x - this.x) / dist;
                 var difY = (ent.y - this.y) / dist;
                 this.velocity.x -= difX * acceleration / (dist * dist);
@@ -178,7 +177,7 @@ Circle.prototype.update = function () {
                     this.velocity.x *= ratio;
                     this.velocity.y *= ratio;
                 }
-            }
+            }*/
         }
         //console.log(ent != this && rectCircleColliding({ x: ent.x, y: ent.y, radius: this.radius }, {x: ent.x, y: ent.y, width: ent.width, height: ent.height}));
         if ((ent != this && this.collide({ x: ent.x, y: ent.y, radius: this.visualRadius }))) {
