@@ -272,6 +272,16 @@ function rectCircleColliding (cir, rec) {
         return true;
     }
     // test the collision at the rectangle corners
+    // distance center of rect to circle
+    var distRectCircleX = Math.abs(rec.w/2 - cir.x);
+    var distRectCircleY = Math.abs(rec.h/2 - cir.y);
+    var lenRectCir = distRectCircleX * distRectCircleY + distRectCircleY * distRectCircleY;
+    // distance top left corner of rec to the center of rec
+    var recCirX = Math.abs(rec.w/2 - rec.x);
+    var recCiry = Math.abs(rec.h/2 - rec.y);
+    var recCirlen = recCirX * recCirX + recCirY * recCirY;
+
+    console.log(lenRectCir <= recCirlen + cir.radius);
     var dx = Math.abs(distX - rec.w / 2);
     var dy = Math.abs(distY - rec.h / 2);
     var distance = dx * dx + dy * dy;
