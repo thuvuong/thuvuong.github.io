@@ -1,4 +1,3 @@
-
 // GameBoard code below
 
 function distance(a, b) {
@@ -86,9 +85,6 @@ Circle.prototype.update = function () {
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
         if ((ent != this && this.collide(ent)) ) {
-            console.log("hello");
-            console.log("circle: ", (ent != this && this.collide(ent)))
-            console.log("Rectangle", ent != this && rectCircleColliding(this, ent));
             var temp = { x: this.velocity.x, y: this.velocity.y };
 
             var dist = distance(this, ent);
@@ -120,72 +116,15 @@ Circle.prototype.update = function () {
                 ent.radius -= 1;
             }
         }
-        if (rectCircleColliding(this, ent)) {
-            var temp = { x: this.velocity.x, y: this.velocity.y };
 
-            var dist = distance(this, ent);
-            var delta = this.radius + this.radius - dist;
-            var difX = (this.x - ent.x)/dist;
-            var difY = (this.y - ent.y)/dist;
-
-            this.x += difX * delta / 2;
-            this.y += difY * delta / 2;
-
-           
-            this.velocity.x = temp.x * friction;
-            this.velocity.y = temp.y * friction;
-
-            this.x += this.velocity.x * this.game.clockTick;
-            this.y += this.velocity.y * this.game.clockTick;
-           
-           /* if (this.it) {
-                this.setNotIt();
-                ent.setIt();
-                ent.radius += 1;
-            }
-            else {
-                this.setIt();
-                ent.setNotIt();
-                ent.radius -= 1;
-            }*/
-        }
         if (rectCircleColliding({ x: ent.x, y: ent.y, radius: this.radius }, {x: ent.x, y: ent.y, w: ent.width, h: ent.height })) {
             
-            var dist = distance(this, ent);
-            //red
-			/*if (this.it && dist > this.radius + ent.radius + 10) {
-                var difX = (ent.x - this.x)/dist;
-                var difY = (ent.y - this.y)/dist;
-                this.velocity.x += difX * acceleration / (dist * dist);
-                this.velocity.y += difY * acceleration / (dist * dist);
-                var speed = Math.sqrt(this.velocity.x*this.velocity.x + this.velocity.y*this.velocity.y);
-                if (speed > maxSpeed) {
-                    var ratio = maxSpeed / speed;
-                    this.velocity.x *= ratio;
-                    this.velocity.y *= ratio;
-                }
-            }*/
-			//white
-            /*if (this.it && dist > this.radius + ent.radius) {
-                var difX = (ent.x - this.x) / dist;
-                var difY = (ent.y - this.y) / dist;
-                this.velocity.x -= difX * acceleration / (dist * dist);
-                this.velocity.y -= difY * acceleration / (dist * dist);
-                var speed = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
-                if (speed > maxSpeed) {
-                    var ratio = maxSpeed / speed;
-                    this.velocity.x *= ratio;
-                    this.velocity.y *= ratio;
-                }
-            }*/
+          
         }
         //console.log(ent != this && rectCircleColliding({ x: ent.x, y: ent.y, radius: this.radius }, {x: ent.x, y: ent.y, width: ent.width, height: ent.height}));
         if ((ent != this && this.collide({ x: ent.x, y: ent.y, radius: this.visualRadius }))) {
-            //console.log("hello");
-           // console.log("circle: ", (ent != this && this.collide({ x: ent.x, y: ent.y, radius: this.visualRadius })))
-           // console.log("Rectangle", ent != this && rectCircleColliding({ x: ent.x, y: ent.y, radius: this.radius }, {x: ent.x, y: ent.y, w: ent.width, h: ent.height}));
-            var dist = distance(this, ent);
             
+            var dist = distance(this, ent);
             
 			//red
 			if (this.it && dist > this.radius + ent.radius + 10) {
@@ -263,11 +202,11 @@ function rectCircleColliding (cir, rec) {
         return false;
     }
     // if the distance is less than haft rectangle, then they are colling
-    if (distX <= (rec.w / 2 + cir.radius)) {
+    if (distX <= (rec.w / 2)) {
         console.log("true 1: ");
         return true;
     }
-    if (distY <= (rec.h / 2 + cir.radius)) {
+    if (distY <= (rec.h / 2)) {
         console.log("true 2: ");
         return true;
     }
@@ -281,7 +220,7 @@ function rectCircleColliding (cir, rec) {
     var recCirY = Math.abs(rec.h/2 - rec.y);
     var recCirlen = recCirX * recCirX + recCirY * recCirY;
 
-    console.log(lenRectCir <= recCirlen + cir.radius);
+    console.log("calculate corner: ",lenRectCir <= recCirlen + cir.radius);
     var dx = Math.abs(distX - rec.w / 2);
     var dy = Math.abs(distY - rec.h / 2);
     var distance = dx * dx + dy * dy;
@@ -336,7 +275,7 @@ ASSET_MANAGER.downloadAll(function () {
         gameEngine.addEntity(circle);
     }
     
-	for (var i = 0; i < 5; i++) {
+	for (var i = 0; i < 4; i++) {
 		rect = new Rectangle(gameEngine, Math.floor(Math.random() * 600), Math.floor(Math.random() * 600));
 		gameEngine.addEntity(rect);
 	}
