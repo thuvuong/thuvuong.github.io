@@ -324,7 +324,7 @@ var height = [];
 
 
 
-var myLen = 0;
+var length = 0;
 for (var i = 0; i < gameEngine.entities.length; i++) {
   velocity.push(gameEngine.entities[i].velocity);
   x.push(gameEngine.entities[i].x);
@@ -339,13 +339,13 @@ for (var i = 0; i < gameEngine.entities.length; i++) {
 
 
   if (typeof(gameEngine.entities[i].color) != "undefined") {
-    myLen++;
+    length++;
   }
 }
 
-var mytotalLen = gameEngine.entities.length;
+var totalLength = gameEngine.entities.length;
 
-save = {vel: velocity, x: x, y: y, it: it, vis: visualRadius, col: color, wid: width, hei: height, len: myLen, total: mytotalLen};
+save = {vel: velocity, x: x, y: y, it: it, vis: visualRadius, col: color, wid: width, hei: height, len: length, total: totalLength};
 
 
 socket.emit("save", { studentname: "Thu Vuong", statename: "Save", data: save });
@@ -379,26 +379,26 @@ function loadSim() {
               }
 
               for (var i = 0; i < loadData.len; i++) {
-                var myCircle = new Circle(gameEngine);
-                myCircle.velocity = velocity[i];
-                myCircle.x = x[i];
-                myCircle.y = y[i];
-                myCircle.it = it[i];
-                myCircle.visualRadius = visualRadius[i];
-                myCircle.color = color[i];
+                var theCircle = new Circle(gameEngine);
+                theCircle.velocity = velocity[i];
+                theCircle.x = x[i];
+                theCircle.y = y[i];
+                theCircle.it = it[i];
+                theCircle.visualRadius = visualRadius[i];
+                theCircle.color = color[i];
 
-                gameEngine.addEntity(myCircle);
+                gameEngine.addEntity(theCircle);
 
               }
 
               for (var i = loadData.len; i < loadData.total; i++) {
-                var myRec = new Rectangle(gameEngine);
-                myRec.x = x[i];
-                myRec.y = y[i];
-                myRec.width = width[i];
-                myRec.height = height[i];
+                var theRec = new Rectangle(gameEngine);
+                theRec.x = x[i];
+                theRec.y = y[i];
+                theRec.width = width[i];
+                theRec.height = height[i];
 
-                gameEngine.addEntity(myRec);
+                gameEngine.addEntity(theRec);
 
               }
 
