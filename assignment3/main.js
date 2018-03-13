@@ -312,7 +312,7 @@ Rectangle.prototype.draw = function (ctx) {
 
 function saveSim() {
 
-var velociy = [];
+var velocity = [];
 var x = [];
 var y = [];
 var it = [];
